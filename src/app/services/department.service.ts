@@ -13,13 +13,13 @@ export class DepartmentService {
 
   getDepartments(): Observable<ApiResponse<Department[]>> {
     return this.http.get<ApiResponse<Department[]>>(
-      `${this.API_URL}/departments`
+      `${this.API_URL}/Departments`
     );
   }
 
   getDepartment(id: number): Observable<ApiResponse<Department>> {
     return this.http.get<ApiResponse<Department>>(
-      `${this.API_URL}/departments/${id}`
+      `${this.API_URL}/Departments/${id}`
     );
   }
 
@@ -27,7 +27,7 @@ export class DepartmentService {
     department: Department
   ): Observable<ApiResponse<Department>> {
     return this.http.post<ApiResponse<Department>>(
-      `${this.API_URL}/departments`,
+      `${this.API_URL}/Departments`,
       department
     );
   }
@@ -37,14 +37,14 @@ export class DepartmentService {
     department: Department
   ): Observable<ApiResponse<Department>> {
     return this.http.put<ApiResponse<Department>>(
-      `${this.API_URL}/departments/${id}`,
+      `${this.API_URL}/Departments/${id}`,
       department
     );
   }
 
   deleteDepartment(id: number): Observable<ApiResponse<boolean>> {
     return this.http.delete<ApiResponse<boolean>>(
-      `${this.API_URL}/departments/${id}`
+      `${this.API_URL}/Departments/${id}`
     );
   }
 }

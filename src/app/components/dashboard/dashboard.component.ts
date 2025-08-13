@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
+import { DepartmentService } from '../../services/department.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -17,6 +18,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private employeeService: EmployeeService,
+    private departmentService: DepartmentService,
     private authService: AuthService,
     private router: Router
   ) {}
@@ -27,14 +29,53 @@ export class DashboardComponent implements OnInit {
   }
 
   loadStats(): void {
-    this.employeeService.getEmployeeStats().subscribe({
-      next: (response) => {
-        if (response.success && response.data) {
-          this.stats.set(response.data);
-        }
+    // Get employees and departments to calculate stats
+    this.employeeService.getEmployees(1, 1000).subscribe({
+      next: (employeeResponse) => {
+        this.departmentService.getDepartments().subscribe({
+          next: (departmentResponse) => {
+            if (employeeResponse.success && departmentResponse.success) {
+              const employees = employeeResponse.data || [];
+              const departments = departmentResponse.data || [];
+
+              const stats = {
+                totalEmployees: employees.length,
+                totalDepartments: departments.length,
+                activeEmployees: employees.filter((emp: any) => emp.isActive)
+                  .length,
+                averageSalary:
+                  employees.length > 0
+                    ? Math.round(
+                        employees.reduce(
+                          (sum: number, emp: any) => sum + emp.salary,
+                          0
+                        ) / employees.length
+                      )
+                    : 0,
+              };
+
+              this.stats.set(stats);
+            }
+          },
+          error: (error) => {
+            console.error('Error loading departments:', error);
+            this.stats.set({
+              totalEmployees: 0,
+              totalDepartments: 0,
+              activeEmployees: 0,
+              averageSalary: 0,
+            });
+          },
+        });
       },
       error: (error) => {
-        console.error('Error loading stats:', error);
+        console.error('Error loading employees:', error);
+        this.stats.set({
+          totalEmployees: 0,
+          totalDepartments: 0,
+          activeEmployees: 0,
+          averageSalary: 0,
+        });
       },
     });
   }

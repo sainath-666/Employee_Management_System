@@ -29,20 +29,20 @@ export class EmployeeService {
       params = params.set('departmentId', departmentId.toString());
     }
 
-    return this.http.get<ApiResponse<Employee[]>>(`${this.API_URL}/employees`, {
+    return this.http.get<ApiResponse<Employee[]>>(`${this.API_URL}/Employees`, {
       params,
     });
   }
 
   getEmployee(id: number): Observable<ApiResponse<Employee>> {
     return this.http.get<ApiResponse<Employee>>(
-      `${this.API_URL}/employees/${id}`
+      `${this.API_URL}/Employees/${id}`
     );
   }
 
   createEmployee(employee: Employee): Observable<ApiResponse<Employee>> {
     return this.http.post<ApiResponse<Employee>>(
-      `${this.API_URL}/employees`,
+      `${this.API_URL}/Employees`,
       employee
     );
   }
@@ -52,18 +52,14 @@ export class EmployeeService {
     employee: Employee
   ): Observable<ApiResponse<Employee>> {
     return this.http.put<ApiResponse<Employee>>(
-      `${this.API_URL}/employees/${id}`,
+      `${this.API_URL}/Employees/${id}`,
       employee
     );
   }
 
   deleteEmployee(id: number): Observable<ApiResponse<boolean>> {
     return this.http.delete<ApiResponse<boolean>>(
-      `${this.API_URL}/employees/${id}`
+      `${this.API_URL}/Employees/${id}`
     );
-  }
-
-  getEmployeeStats(): Observable<ApiResponse<any>> {
-    return this.http.get<ApiResponse<any>>(`${this.API_URL}/employees/stats`);
   }
 }
