@@ -7,7 +7,7 @@ import { Employee, ApiResponse } from '../models/employee.model';
   providedIn: 'root',
 })
 export class EmployeeService {
-  private readonly API_URL = 'http://localhost:7194/api';
+  private readonly API_URL = 'https://localhost:7194/api';
 
   constructor(private http: HttpClient) {}
 

@@ -18,6 +18,7 @@ export class EmployeeListComponent implements OnInit {
   employees = signal<Employee[]>([]);
   departments = signal<Department[]>([]);
   isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
   currentPage = signal(1);
   pageSize = signal(10);
   totalItems = signal(0);
@@ -49,6 +50,7 @@ export class EmployeeListComponent implements OnInit {
 
   loadEmployees(): void {
     this.isLoading.set(true);
+    this.errorMessage.set(null);
     this.employeeService.getEmployees().subscribe({
       next: (employees) => {
         this.employees.set(employees);
@@ -57,6 +59,9 @@ export class EmployeeListComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading employees:', error);
+        this.errorMessage.set(
+          'Failed to load employees. Please check if the backend server is running.'
+        );
         this.isLoading.set(false);
       },
     });
@@ -69,6 +74,9 @@ export class EmployeeListComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading departments:', error);
+        this.errorMessage.set(
+          'Failed to load departments. Please check if the backend server is running.'
+        );
       },
     });
   }
