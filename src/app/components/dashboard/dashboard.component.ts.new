@@ -47,9 +47,8 @@ export class DashboardComponent implements OnInit {
                   : 0,
               departmentBreakdown: departments.map((dept) => ({
                 name: dept.departmentName,
-                count: employees.filter(
-                  (emp) => emp.departmentId === dept.departmentId
-                ).length,
+                count: employees.filter((emp) => emp.departmentId === dept.departmentId)
+                  .length,
               })),
             };
             this.stats.set(stats);
@@ -78,9 +77,5 @@ export class DashboardComponent implements OnInit {
 
   navigateToDepartments(): void {
     this.router.navigate(['/departments']);
-  }
-
-  navigateToAddEmployee(): void {
-    this.router.navigate(['/employees/add']);
   }
 }

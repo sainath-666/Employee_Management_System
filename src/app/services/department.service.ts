@@ -11,22 +11,18 @@ export class DepartmentService {
 
   constructor(private http: HttpClient) {}
 
-  getDepartments(): Observable<ApiResponse<Department[]>> {
-    return this.http.get<ApiResponse<Department[]>>(
-      `${this.API_URL}/Departments`
-    );
+  getDepartments(): Observable<Department[]> {
+    return this.http.get<Department[]>(`${this.API_URL}/Departments`);
   }
 
-  getDepartment(id: number): Observable<ApiResponse<Department>> {
-    return this.http.get<ApiResponse<Department>>(
-      `${this.API_URL}/Departments/${id}`
-    );
+  getDepartment(id: number): Observable<Department> {
+    return this.http.get<Department>(`${this.API_URL}/Departments/${id}`);
   }
 
   createDepartment(
     department: Department
-  ): Observable<ApiResponse<Department>> {
-    return this.http.post<ApiResponse<Department>>(
+  ): Observable<{ departmentId: number }> {
+    return this.http.post<{ departmentId: number }>(
       `${this.API_URL}/Departments`,
       department
     );

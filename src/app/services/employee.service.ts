@@ -7,41 +7,20 @@ import { Employee, ApiResponse } from '../models/employee.model';
   providedIn: 'root',
 })
 export class EmployeeService {
-  private readonly API_URL = 'https://localhost:7194/api';
+  private readonly API_URL = 'http://localhost:7194/api';
 
   constructor(private http: HttpClient) {}
 
-  getEmployees(
-    page: number = 1,
-    pageSize: number = 10,
-    search?: string,
-    departmentId?: number
-  ): Observable<ApiResponse<Employee[]>> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('pageSize', pageSize.toString());
-
-    if (search) {
-      params = params.set('search', search);
-    }
-
-    if (departmentId) {
-      params = params.set('departmentId', departmentId.toString());
-    }
-
-    return this.http.get<ApiResponse<Employee[]>>(`${this.API_URL}/Employees`, {
-      params,
-    });
+  getEmployees(): Observable<Employee[]> {
+    return this.http.get<Employee[]>(`${this.API_URL}/Employees`);
   }
 
-  getEmployee(id: number): Observable<ApiResponse<Employee>> {
-    return this.http.get<ApiResponse<Employee>>(
-      `${this.API_URL}/Employees/${id}`
-    );
+  getEmployee(id: number): Observable<Employee> {
+    return this.http.get<Employee>(`${this.API_URL}/Employees/${id}`);
   }
 
-  createEmployee(employee: Employee): Observable<ApiResponse<Employee>> {
-    return this.http.post<ApiResponse<Employee>>(
+  createEmployee(employee: Employee): Observable<{ employeeId: number }> {
+    return this.http.post<{ employeeId: number }>(
       `${this.API_URL}/Employees`,
       employee
     );

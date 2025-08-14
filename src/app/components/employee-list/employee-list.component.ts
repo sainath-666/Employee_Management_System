@@ -49,35 +49,23 @@ export class EmployeeListComponent implements OnInit {
 
   loadEmployees(): void {
     this.isLoading.set(true);
-    this.employeeService
-      .getEmployees(
-        this.currentPage(),
-        this.pageSize(),
-        this.searchControl.value || undefined,
-        this.selectedDepartmentId() || undefined
-      )
-      .subscribe({
-        next: (response) => {
-          if (response.success && response.data) {
-            this.employees.set(response.data);
-            // Assuming the API returns total count in the response
-            this.totalItems.set(response.data.length); // You might need to adjust this based on your API
-          }
-          this.isLoading.set(false);
-        },
-        error: (error) => {
-          console.error('Error loading employees:', error);
-          this.isLoading.set(false);
-        },
-      });
+    this.employeeService.getEmployees().subscribe({
+      next: (employees) => {
+        this.employees.set(employees);
+        this.totalItems.set(employees.length);
+        this.isLoading.set(false);
+      },
+      error: (error) => {
+        console.error('Error loading employees:', error);
+        this.isLoading.set(false);
+      },
+    });
   }
 
   loadDepartments(): void {
     this.departmentService.getDepartments().subscribe({
-      next: (response) => {
-        if (response.success && response.data) {
-          this.departments.set(response.data);
-        }
+      next: (departments) => {
+        this.departments.set(departments);
       },
       error: (error) => {
         console.error('Error loading departments:', error);
