@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
 import { DepartmentService } from '../../services/department.service';
 import { AuthService } from '../../services/auth.service';
@@ -9,7 +9,7 @@ import { Employee, Department } from '../../models/employee.model';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.component.html',
   styles: [],
 })
@@ -22,11 +22,36 @@ export class DashboardComponent implements OnInit {
     private departmentService: DepartmentService,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) {
+    // Listen to the router events to refresh stats when navigation occurs
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.loadStats();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadStats();
     this.currentUser.set(this.authService.currentUser());
+  }
+
+  // Navigation methods
+  navigateToEmployees(): void {
+    this.router.navigate(['/employees']);
+  }
+
+  navigateToDepartments(): void {
+    this.router.navigate(['/departments']);
+  }
+
+  navigateToAddEmployee(): void {
+    this.router.navigate(['/employees/add']);
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   loadStats(): void {
@@ -67,20 +92,5 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
-
-  navigateToEmployees(): void {
-    this.router.navigate(['/employees']);
-  }
-
-  navigateToDepartments(): void {
-    this.router.navigate(['/departments']);
-  }
-
-  navigateToAddEmployee(): void {
-    this.router.navigate(['/employees/add']);
-  }
+  // Class ends here
 }

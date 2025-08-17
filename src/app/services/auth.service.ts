@@ -48,8 +48,8 @@ export class AuthService {
     localStorage.setItem(this.tokenKey, token);
   }
 
-  private setUser(user: any): void {
-    localStorage.setItem(this.userKey, JSON.stringify(user));
+  isLoggedIn(): boolean {
+    return this.isAuthenticatedSubject.value;
   }
 
   private checkAuthStatus(): void {
@@ -68,7 +68,7 @@ export class AuthService {
     }
   }
 
-  isLoggedIn(): boolean {
-    return this.isAuthenticatedSubject.value;
+  private setUser(user: any): void {
+    localStorage.setItem(this.userKey, JSON.stringify(user));
   }
 }

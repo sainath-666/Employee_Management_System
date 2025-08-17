@@ -1,18 +1,32 @@
-<div class="min-h-screen bg-gray-100">
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
   <!-- Navigation -->
-  <nav class="bg-white shadow-sm">
+  <nav class="bg-white shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex items-center">
-          <h1 class="text-xl font-semibold text-gray-900">
+          <h1
+            class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
+          >
             {{ isEditMode() ? "Edit Employee" : "Add New Employee" }}
           </h1>
         </div>
         <div class="flex items-center space-x-4">
           <button
             (click)="navigateToEmployees()"
-            class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+            class="text-gray-700 hover:text-blue-600 px-4 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out flex items-center"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
             Back to Employees
           </button>
         </div>
@@ -22,81 +36,192 @@
 
   <!-- Main Content -->
   <div class="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
-    <div class="bg-white shadow rounded-lg">
-      <div class="px-4 py-5 sm:p-6">
+    <div
+      class="bg-white shadow-lg rounded-xl transform hover:shadow-xl transition duration-200"
+    >
+      <div class="px-6 py-6">
         <form
           [formGroup]="employeeForm"
           (ngSubmit)="onSubmit()"
-          class="space-y-6"
+          class="space-y-8"
         >
           <!-- Personal Information -->
-          <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
-            <div>
-              <label
-                for="firstName"
-                class="block text-sm font-medium text-gray-700"
+          <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+            <h3
+              class="text-lg font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 mr-2 text-blue-600"
+                viewBox="0 0 20 20"
+                fill="currentColor"
               >
-                First Name
-              </label>
-              <input
-                type="text"
-                id="firstName"
-                formControlName="firstName"
-                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <div
-                *ngIf="employeeForm.get('firstName')?.errors?.['required'] && employeeForm.get('firstName')?.touched"
-                class="text-red-500 text-sm mt-1"
-              >
-                First name is required
+                <path
+                  fill-rule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              Personal Information
+            </h3>
+            <div class="grid grid-cols-1 gap-y-6 gap-x-6 sm:grid-cols-2">
+              <div>
+                <label
+                  for="firstName"
+                  class="flex text-sm font-medium text-gray-700 mb-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 mr-1 text-gray-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+                    />
+                  </svg>
+                  First Name
+                </label>
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="firstName"
+                    formControlName="firstName"
+                    class="block w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:bg-white transition duration-150"
+                    [ngClass]="{'border-red-300 bg-red-50': employeeForm.get('firstName')?.errors?.['required'] && employeeForm.get('firstName')?.touched}"
+                  />
+                  <div
+                    *ngIf="employeeForm.get('firstName')?.errors?.['required'] && employeeForm.get('firstName')?.touched"
+                    class="absolute -bottom-5 left-0 text-red-500 text-sm flex items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 mr-1"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    First name is required
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div>
-              <label
-                for="lastName"
-                class="block text-sm font-medium text-gray-700"
-              >
-                Last Name
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                formControlName="lastName"
-                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <div
-                *ngIf="employeeForm.get('lastName')?.errors?.['required'] && employeeForm.get('lastName')?.touched"
-                class="text-red-500 text-sm mt-1"
-              >
-                Last name is required
+              <div>
+                <label
+                  for="lastName"
+                  class="flex text-sm font-medium text-gray-700 mb-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 mr-1 text-gray-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+                    />
+                  </svg>
+                  Last Name
+                </label>
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="lastName"
+                    formControlName="lastName"
+                    class="block w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:bg-white transition duration-150"
+                    [ngClass]="{'border-red-300 bg-red-50': employeeForm.get('lastName')?.errors?.['required'] && employeeForm.get('lastName')?.touched}"
+                  />
+                  <div
+                    *ngIf="employeeForm.get('lastName')?.errors?.['required'] && employeeForm.get('lastName')?.touched"
+                    class="absolute -bottom-5 left-0 text-red-500 text-sm flex items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 mr-1"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    Last name is required
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div>
-              <label
-                for="email"
-                class="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                formControlName="email"
-                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <div
-                *ngIf="employeeForm.get('email')?.errors?.['required'] && employeeForm.get('email')?.touched"
-                class="text-red-500 text-sm mt-1"
-              >
-                Email is required
-              </div>
-              <div
-                *ngIf="employeeForm.get('email')?.errors?.['email'] && employeeForm.get('email')?.touched"
-                class="text-red-500 text-sm mt-1"
-              >
-                Please enter a valid email
+              <div>
+                <label
+                  for="email"
+                  class="flex text-sm font-medium text-gray-700 mb-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 mr-1 text-gray-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
+                    />
+                    <path
+                      d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
+                    />
+                  </svg>
+                  Email
+                </label>
+                <div class="relative">
+                  <input
+                    type="email"
+                    id="email"
+                    formControlName="email"
+                    class="block w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:bg-white transition duration-150"
+                    [ngClass]="{'border-red-300 bg-red-50': (employeeForm.get('email')?.errors?.['required'] || employeeForm.get('email')?.errors?.['email']) && employeeForm.get('email')?.touched}"
+                  />
+                  <div
+                    *ngIf="employeeForm.get('email')?.errors?.['required'] && employeeForm.get('email')?.touched"
+                    class="absolute -bottom-5 left-0 text-red-500 text-sm flex items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 mr-1"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    Email is required
+                  </div>
+                  <div
+                    *ngIf="employeeForm.get('email')?.errors?.['email'] && employeeForm.get('email')?.touched"
+                    class="absolute -bottom-5 left-0 text-red-500 text-sm flex items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 mr-1"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    Please enter a valid email
+                  </div>
+                </div>
               </div>
             </div>
 

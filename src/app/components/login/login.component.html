@@ -1,5 +1,6 @@
 <div
   class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+  style="background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%)"
 >
   <div class="max-w-md w-full space-y-8">
     <div>
@@ -10,84 +11,137 @@
         Sign in to your account
       </p>
     </div>
-    <form
-      class="mt-8 space-y-6"
-      [formGroup]="loginForm"
-      (ngSubmit)="onSubmit()"
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
     >
-      <div class="rounded-md shadow-sm -space-y-px">
-        <div>
-          <label for="username" class="sr-only">Username</label>
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        style="
+          background: #fff;
+          padding: 2.5rem 2rem;
+          border-radius: 1rem;
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+          min-width: 320px;
+          width: 100%;
+          max-width: 350px;
+        "
+      >
+        <h2
+          style="
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #3b82f6;
+            font-weight: 600;
+          "
+        >
+          Login
+        </h2>
+        <div style="margin-bottom: 1.25rem">
+          <label
+            for="username"
+            style="
+              display: block;
+              margin-bottom: 0.5rem;
+              color: #374151;
+              font-weight: 500;
+            "
+            >Username</label
+          >
           <input
-            id="username"
-            name="username"
             type="text"
-            required
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Username"
+            id="username"
             formControlName="username"
-            [class.border-red-500]="
+            name="username"
+            required
+            style="
+              width: 100%;
+              padding: 0.75rem;
+              border: 1px solid #d1d5db;
+              border-radius: 0.5rem;
+              outline: none;
+              background: #f9fafb;
+              transition: border 0.2s;
+            "
+          />
+          <div
+            *ngIf="
               loginForm.get('username')?.invalid &&
               loginForm.get('username')?.touched
             "
-          />
+            style="color: #ef4444; font-size: 0.9em; margin-top: 0.25rem"
+          >
+            Username is required.
+          </div>
         </div>
-        <div>
-          <label for="password" class="sr-only">Password</label>
+        <div style="margin-bottom: 1.5rem">
+          <label
+            for="password"
+            style="
+              display: block;
+              margin-bottom: 0.5rem;
+              color: #374151;
+              font-weight: 500;
+            "
+            >Password</label
+          >
           <input
-            id="password"
-            name="password"
             type="password"
-            required
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Password"
+            id="password"
             formControlName="password"
-            [class.border-red-500]="
+            name="password"
+            required
+            style="
+              width: 100%;
+              padding: 0.75rem;
+              border: 1px solid #d1d5db;
+              border-radius: 0.5rem;
+              outline: none;
+              background: #f9fafb;
+              transition: border 0.2s;
+            "
+          />
+          <div
+            *ngIf="
               loginForm.get('password')?.invalid &&
               loginForm.get('password')?.touched
             "
-          />
+            style="color: #ef4444; font-size: 0.9em; margin-top: 0.25rem"
+          >
+            Password is required (min 6 chars).
+          </div>
         </div>
-      </div>
-
-      <div *ngIf="errorMessage()" class="text-red-600 text-sm text-center">
-        {{ errorMessage() }}
-      </div>
-
-      <div>
         <button
           type="submit"
-          [disabled]="loginForm.invalid || isLoading()"
-          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="isLoading() || loginForm.invalid"
+          style="
+            width: 100%;
+            padding: 0.75rem;
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+          "
         >
-          <span
-            *ngIf="isLoading()"
-            class="absolute left-0 inset-y-0 flex items-center pl-3"
-          >
-            <svg
-              class="animate-spin h-5 w-5 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              ></circle>
-              <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-          </span>
-          {{ isLoading() ? "Signing in..." : "Sign in" }}
+          Login
         </button>
-      </div>
-    </form>
+        <div
+          *ngIf="errorMessage()"
+          style="color: #ef4444; text-align: center; margin-top: 1rem"
+        >
+          {{ errorMessage() }}
+        </div>
+      </form>
+    </div>
+
+    <!-- Removed duplicate error and button markup, and extra closing form tag -->
   </div>
 </div>

@@ -48,6 +48,13 @@ export class EmployeeListComponent implements OnInit {
       });
   }
 
+  getDepartmentName(departmentId: number): string {
+    const department = this.departments().find(
+      (d) => d.departmentId === departmentId
+    );
+    return department ? department.departmentName : 'No Department';
+  }
+
   loadEmployees(): void {
     this.isLoading.set(true);
     this.errorMessage.set(null);
