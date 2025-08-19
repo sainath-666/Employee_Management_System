@@ -7,7 +7,7 @@ import { LoginRequest, LoginResponse } from '../models/employee.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly API_URL = 'https://localhost:7194/api'; // Update with your backend URL
+  private readonly API_URL = 'https://localhost:7194/api';
   private tokenKey = 'auth_token';
   private userKey = 'user_info';
 
@@ -18,6 +18,61 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     this.checkAuthStatus();
+  }
+
+  private checkAuthStatus(): void {
+    try {
+      const token = this.getToken();
+      const user = this.getUser();
+
+      if (token && user) {
+        // Validate token with backend
+        this.http.get(`${this.API_URL}/Auth/validate`).subscribe({
+          next: () => {
+            this.isAuthenticatedSubject.next(true);
+            this.currentUser.set(user);
+          },
+          error: () => {
+            // If token validation fails, clear auth state
+            this.logout();
+          },
+        });
+      } else {
+        this.isAuthenticatedSubject.next(false);
+        this.currentUser.set(null);
+      }
+    } catch (error) {
+      console.error('Error checking auth status:', error);
+      this.isAuthenticatedSubject.next(false);
+      this.currentUser.set(null);
+    }
+  }
+
+  isLoggedIn(): boolean {
+    return this.isAuthenticatedSubject.value;
+  }
+
+  private getUser(): any {
+    try {
+      const userStr = localStorage.getItem(this.userKey);
+      if (!userStr) return null;
+      return JSON.parse(userStr);
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      return null;
+    }
+  }
+
+  private setUser(user: any): void {
+    try {
+      if (user) {
+        localStorage.setItem(this.userKey, JSON.stringify(user));
+      } else {
+        localStorage.removeItem(this.userKey);
+      }
+    } catch (error) {
+      console.error('Error saving user data:', error);
+    }
   }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
@@ -46,29 +101,5 @@ export class AuthService {
 
   private setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
-  }
-
-  isLoggedIn(): boolean {
-    return this.isAuthenticatedSubject.value;
-  }
-
-  private checkAuthStatus(): void {
-    const token = this.getToken();
-    const user = localStorage.getItem(this.userKey);
-
-    if (token && user) {
-      try {
-        const parsedUser = JSON.parse(user);
-        this.isAuthenticatedSubject.next(true);
-        this.currentUser.set(parsedUser);
-      } catch (error) {
-        // If JSON parsing fails, clear invalid data
-        this.logout();
-      }
-    }
-  }
-
-  private setUser(user: any): void {
-    localStorage.setItem(this.userKey, JSON.stringify(user));
   }
 }

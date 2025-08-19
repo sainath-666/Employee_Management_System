@@ -1,14 +1,57 @@
-import { Routes } from '@angular/router';
+import { Routes, Router } from '@angular/router';
+import { inject } from '@angular/core';
 import { authGuard } from './guards/auth.guard';
+import { AuthService } from './services/auth.service';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  {
+    path: '',
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./components/dashboard/dashboard.component').then(
+            (m) => m.DashboardComponent
+          ),
+      },
+      {
+        path: 'employees',
+        loadComponent: () =>
+          import('./components/employee-list/employee-list.component').then(
+            (m) => m.EmployeeListComponent
+          ),
+      },
+      {
+        path: 'departments',
+        loadComponent: () =>
+          import('./components/department-list/department-list.component').then(
+            (m) => m.DepartmentListComponent
+          ),
+      },
+    ],
+  },
   {
     path: 'login',
     loadComponent: () =>
       import('./components/login/login.component').then(
         (m) => m.LoginComponent
       ),
+    canActivate: [
+      () => {
+        const authService = inject(AuthService);
+        const router = inject(Router);
+
+        return authService.isLoggedIn()
+          ? router.createUrlTree(['/dashboard'])
+          : true;
+      },
+    ],
   },
   {
     path: 'dashboard',
@@ -50,5 +93,15 @@ export const routes: Routes = [
       ),
     canActivate: [authGuard],
   },
-  { path: '**', redirectTo: '/login' },
+  {
+    path: '**',
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: '/dashboard',
+        pathMatch: 'full',
+      },
+    ],
+  },
 ];

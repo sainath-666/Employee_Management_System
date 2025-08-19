@@ -6,10 +6,15 @@ export const authGuard = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isLoggedIn()) {
+  const token = authService.getToken();
+
+  if (token) {
     return true;
   }
 
-  router.navigate(['/login']);
+  // Only redirect to login if not already on login page
+  if (!router.url.includes('/login')) {
+    router.navigate(['/login']);
+  }
   return false;
 };

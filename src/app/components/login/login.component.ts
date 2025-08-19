@@ -17,7 +17,7 @@ import { AuthService } from '../../services/auth.service';
   styles: [],
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+  loginForm!: FormGroup;
   isLoading = signal(false);
   errorMessage = signal('');
 
@@ -26,6 +26,12 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router
   ) {
+    // If already logged in, redirect to dashboard
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/dashboard']);
+      return;
+    }
+
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
