@@ -1,10 +1,10 @@
-<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+<div class="min-h-screen bg-gradient-to-br from-blue-500 to-blue-100">
   <!-- Navigation -->
-  <nav class="bg-white shadow-md">
+  <nav class="bg-blue-950 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex items-center">
-          <h1 class="text-xl font-bold text-indigo-600">
+          <h1 class="text-xl font-bold text-white">
             Employee Management System
           </h1>
         </div>
@@ -13,17 +13,22 @@
             <div
               class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center"
             >
-              <span class="text-indigo-600 font-medium">{{
+              <span class="text-blue-600 font-medium">
+                <!-- {{
                 currentUser()?.username?.charAt(0).toUpperCase()
-              }}</span>
+              }} -->
+                SAI
+              </span>
             </div>
-            <span class="text-sm font-medium text-gray-700">{{
+            <span class="text-sm font-medium text-gray-700">
+              <!-- {{
               currentUser()?.username
-            }}</span>
+            }} -->
+            </span>
           </div>
           <button
             (click)="logout()"
-            class="bg-white border border-red-500 text-red-500 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-medium transition duration-150"
+            class="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition duration-150 ease-in-out flex items-center shadow-md hover:shadow-lg"
           >
             Logout
           </button>
@@ -224,28 +229,8 @@
             <h3 class="text-lg font-semibold text-gray-900 mb-4">
               Department Distribution
             </h3>
-            <div class="space-y-4">
-              <div
-                *ngFor="let dept of stats().departmentBreakdown"
-                class="relative"
-              >
-                <div class="flex items-center justify-between mb-1">
-                  <span class="text-sm font-medium text-gray-600">{{
-                    dept.name
-                  }}</span>
-                  <span class="text-sm font-medium text-gray-900">{{
-                    dept.count
-                  }}</span>
-                </div>
-                <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div
-                    class="h-full bg-indigo-500 rounded-full"
-                    [style.width.%]="
-                      (dept.count / stats().totalEmployees) * 100
-                    "
-                  ></div>
-                </div>
-              </div>
+            <div class="w-full h-[300px] relative">
+              <canvas #deptChart></canvas>
             </div>
           </div>
         </div>
@@ -303,24 +288,7 @@
                   >Department List</span
                 >
               </a>
-              <a
-                class="flex items-center p-3 hover:bg-gray-50 rounded-lg transition duration-150 cursor-pointer"
-              >
-                <svg
-                  class="h-5 w-5 text-indigo-500 mr-3"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                  />
-                </svg>
-                <span class="text-gray-700">Reports</span>
-              </a>
+
             </div>
           </div>
         </div>

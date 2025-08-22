@@ -1,19 +1,28 @@
-import { Component, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  signal,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
 import { DepartmentService } from '../../services/department.service';
 import { AuthService } from '../../services/auth.service';
 import { Employee, Department } from '../../models/employee.model';
+import { Chart, ChartConfiguration } from 'chart.js/auto';
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.component.html',
-  styles: [],
+  standalone: true,
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
+  @ViewChild('deptChart') deptChart!: ElementRef;
+  private chart: Chart | null = null;
   stats = signal<any>({});
   currentUser = signal<any>(null);
 
@@ -78,6 +87,7 @@ export class DashboardComponent implements OnInit {
               })),
             };
             this.stats.set(stats);
+            this.updateChart();
           },
           error: (error) => {
             console.error('Error loading departments:', error);
@@ -92,5 +102,81 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Class ends here
+  ngAfterViewInit(): void {
+    this.initializeChart();
+  }
+
+  private initializeChart(): void {
+    if (this.deptChart && this.stats()) {
+      this.updateChart();
+    }
+  }
+
+  private updateChart(): void {
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    const ctx = this.deptChart.nativeElement.getContext('2d');
+    interface DepartmentBreakdown {
+      name: string;
+      count: number;
+    }
+    const departmentData: DepartmentBreakdown[] =
+      this.stats().departmentBreakdown || [];
+
+    this.chart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: departmentData.map((dept) => dept.name),
+        datasets: [
+          {
+            data: departmentData.map((dept) => dept.count),
+            backgroundColor: [
+              '#4F46E5', // Indigo
+              '#10B981', // Green
+              '#3B82F6', // Blue
+              '#F59E0B', // Yellow
+              '#EF4444', // Red
+              '#8B5CF6', // Purple
+              '#EC4899', // Pink
+              '#14B8A6', // Teal
+              '#F97316', // Orange
+              '#64748B', // Slate
+              '#D97706', // Amber
+              '#FBBF24', // Gold
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              font: {
+                size: 14,
+              },
+            },
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                const value = context.raw as number;
+                const total = (context.dataset.data as number[]).reduce(
+                  (a, b) => a + b,
+                  0
+                );
+                const percentage = ((value / total) * 100).toFixed(1);
+                return `${context.label}: ${value} (${percentage}%)`;
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 }
